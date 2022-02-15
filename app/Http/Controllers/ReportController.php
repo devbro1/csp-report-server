@@ -61,7 +61,7 @@ class ReportController extends Controller
      */
     public function show(Request $request, $id)
     {
-        if(!hash_equals($request->get('code'),'abd5a185121219f9fba8564b9fb7c722')){
+        if(!hash_equals($request->get('code'),env('access_code'))){
             return [];
         }
         $report = CSPReport::findOrFail($id);
