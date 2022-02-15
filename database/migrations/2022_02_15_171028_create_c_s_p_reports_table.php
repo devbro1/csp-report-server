@@ -13,9 +13,17 @@ class CreateCSPReportsTable extends Migration
      */
     public function up()
     {
-        Schema::create('c_s_p_reports', function (Blueprint $table) {
+        Schema::create('csp_reports', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->text('document_uri')->nullable();
+            $table->text('referrer')->nullable();
+            $table->text('blocked_uri')->nullable();
+            $table->text('violated_directive')->nullable();
+            $table->text('original_policy')->nullable();
+            $table->text('status_code')->nullable();
+            $table->text('script_sample')->nullable();
+            $table->json('report')->nullable();
         });
     }
 

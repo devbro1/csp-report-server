@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCSPReportRequest;
 use App\Http\Requests\UpdateCSPReportRequest;
 use App\Models\CSPReport;
+use Illuminate\Http\Request;
 
 class ReportController extends Controller
 {
@@ -36,7 +37,20 @@ class ReportController extends Controller
      */
     public function store(StoreCSPReportRequest $request)
     {
-        dd("ASD");
+        $csp_report = $request->get('csp-report',[]);
+
+        $report = new CSPReport();
+        $report->document_uri = $csp_report['document-uri'];
+        $report->referrer = $csp_report['referrer'];
+        $report->blocked_uri = $csp_report['blocked-uri'];
+        $report->violated_directive = $csp_report['violated-directive'];
+        $report->original_policy = $csp_report['original-policy'];
+        $report->status_code = $csp_report['status-code'];
+        $report->script_sample = $csp_report['script-sample'];
+        $report->report = json_encode($csp_report,false);
+        $report->save();
+
+        return [];
     }
 
     /**
@@ -45,9 +59,13 @@ class ReportController extends Controller
      * @param  \App\Models\CSPReport  $cSPReport
      * @return \Illuminate\Http\Response
      */
-    public function show(CSPReport $cSPReport)
+    public function show(Request $request, $id)
     {
-        //
+        if(!hash_equals($request->get('code'),'abd5a185121219f9fba8564b9fb7c722')){
+            return [];
+        }
+        $report = CSPReport::findOrFail($id);
+        return (json_decode($report->report));
     }
 
     /**
