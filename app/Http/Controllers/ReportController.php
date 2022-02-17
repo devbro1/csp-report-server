@@ -37,7 +37,7 @@ class ReportController extends Controller
      */
     public function store(StoreCSPReportRequest $request)
     {
-        $csp_report = $request->get('csp-report',[]);
+        $csp_report = json_decode($request->getContent(), true)['csp-report'] ?? [];
 
         $report = new CSPReport();
         $report->document_uri = $csp_report['document-uri'];
