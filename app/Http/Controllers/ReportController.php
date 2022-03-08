@@ -17,9 +17,6 @@ class ReportController extends Controller
      */
     public function index()
     {
-        $message = "CSP Violation Report";
-        $data = [1,2,3,4];
-        Log::channel('csp-report')->info($message,$data);
         return [];
     }
 
