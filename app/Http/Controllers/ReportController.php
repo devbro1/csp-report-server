@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCSPReportRequest;
 use App\Http\Requests\UpdateCSPReportRequest;
 use App\Models\CSPReport;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ReportController extends Controller
 {
@@ -16,6 +17,9 @@ class ReportController extends Controller
      */
     public function index()
     {
+        $message = "CSP Violation Report";
+        $data = [1,2,3,4];
+        Log::channel('csp-report')->info($message,$data);
         return [];
     }
 
@@ -50,6 +54,9 @@ class ReportController extends Controller
         $report->report = json_encode($csp_report,false);
         $report->save();
 
+        $message = "CSP Violation Report";
+        Log::channel('csp-report')->info($message,$csp_report);
+
         return [];
     }
 
@@ -61,7 +68,7 @@ class ReportController extends Controller
      */
     public function show(Request $request, $id)
     {
-        if(!hash_equals($request->get('code'),env('access_code'))){
+        if(!hash_equals($request->get('code'),env('access_code',''))){
             return [];
         }
         $report = CSPReport::findOrFail($id);
